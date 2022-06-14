@@ -11,3 +11,4 @@ python-dotenv==0.20.0
 toml==0.10.2
 typing_extensions==4.2.0
 yarl==1.7.2
+requests==2.28.0

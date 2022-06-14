@@ -1,14 +1,16 @@
 # bot.py
+import logging
 import os
 import random
-import logging
 
-import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
+from helpers import get_nasa_picture
+
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
+DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
+NASA_TOKEN = os.environ.get("NASA_KEY")
 
 logging.basicConfig(filename='flanbot.log',
                     format='%(asctime)s %(levelname)s:%(message)s',
@@ -31,5 +33,15 @@ async def roll(ctx, number_of_dice: int, number_of_sides: int):
 async def luigi(ctx):
     await ctx.send('BOOP')
 
+
+@bot.command(name='NASA', help='Astronomy Picture of the Day')
+async def nasa(ctx):
+    info = get_nasa_picture(NASA_TOKEN)
+
+    await ctx.send(info['img'])
+    await ctx.send(f"{info['title']} - {info['date'].strftime('%d/%m/%Y')}")
+    await ctx.send(info['explanation'])
+
+
 if __name__ == '__main__':
-    bot.run(TOKEN)
+    bot.run(DISCORD_TOKEN)
