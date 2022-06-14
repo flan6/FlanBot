@@ -7,12 +7,9 @@ def get_nasa_picture(token):
     """ Access NASA API and retrive the picture of the day """
 
     # Contact API
-    try:
-        url = f"https://api.nasa.gov/planetary/apod?api_key={token}"
-        response = requests.get(url)
-        response.raise_for_status()
-    except requests.RequestException:
-        return None
+    url = f"https://api.nasa.gov/planetary/apod?api_key={token}"
+    response = requests.get(url)
+    response.raise_for_status()
 
     # Parse response
     get = response.json()
