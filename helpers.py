@@ -15,13 +15,10 @@ def get_nasa_picture(token):
         return None
 
     # Parse response
-    try:
-        get = response.json()
-        return {
-            'img': get["url"],
-            'title': get["title"],
-            'date': datetime.strptime(get["date"], '%Y-%m-%d'),
-            'explanation': get["explanation"]
-        }
-    except (KeyError, TypeError, ValueError):
-        return None
+    get = response.json()
+    return {
+        'img': get["url"],
+        'title': get["title"],
+        'date': datetime.strptime(get["date"], '%Y-%m-%d'),
+        'explanation': get["explanation"]
+    }
