@@ -6,11 +6,11 @@ import random
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from helpers import get_nasa_picture
+from nasa import Nasa
 
 load_dotenv()
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
-NASA_TOKEN = os.environ.get("NASA_KEY")
+NASA_TOKEN = os.environ.get("NASA_TOKEN")
 
 logging.basicConfig(filename='flanbot.log',
                     format='%(asctime)s %(levelname)s:%(message)s',
@@ -29,18 +29,32 @@ async def roll(ctx, number_of_dice: int, number_of_sides: int):
     await ctx.send(', '.join(dice))
 
 
-@bot.command(name='BEEP', help='Mario.')
+@bot.command(name='BEEP', help='BOOP')
 async def luigi(ctx):
     await ctx.send('BOOP')
 
 
-@bot.command(name='NASA', help='Astronomy Picture of the Day')
+@bot.command(name='nasa', aliases=['NASA'], help='Astronomy Picture of the Day')
 async def nasa(ctx):
-    info = get_nasa_picture(NASA_TOKEN)
+    info = Nasa.get_nasa_picture(NASA_TOKEN)
+
+    if not info:
+        await ctx.send('Ocorreu um problema ao buscar a imagem do dia!')
 
     await ctx.send(info['img'])
-    await ctx.send(f"{info['title']} - {info['date'].strftime('%d/%m/%Y')}")
-    await ctx.send(info['explanation'])
+    await ctx.send(f"**{info['title']}**")
+
+
+@bot.command(name='nasa+', aliases=['NASA+'],
+             help='Astronomy Picture of the Day + explanation')
+async def nasa_description(ctx):
+    info = Nasa.get_nasa_picture(NASA_TOKEN, True)
+
+    if not info:
+        await ctx.send('Ocorreu um problema ao buscar a imagem do dia!')
+
+    await ctx.send(info['img'])
+    await ctx.send(f"**{info['title']}** {info['explanation']}")
 
 
 if __name__ == '__main__':
