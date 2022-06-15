@@ -1,12 +1,10 @@
-from datetime import datetime
-
 import requests
 
 
 class Nasa:
 
     @staticmethod
-    def get_nasa_picture(token, description=False):
+    def get_nasa_picture(token):
         """ Access NASA API and retrieve the picture of the day """
 
         # Contact API
@@ -23,9 +21,8 @@ class Nasa:
             result = {
                 'img': get["url"],
                 'title': get["title"],
+                'explanation': get["explanation"]
             }
-            if description:
-                result['explanation'] = get["explanation"]
 
             return result
 

@@ -34,27 +34,19 @@ async def luigi(ctx):
     await ctx.send('BOOP')
 
 
-@bot.command(name='nasa', aliases=['NASA'], help='Astronomy Picture of the Day')
-async def nasa(ctx):
+@bot.command(name='nasa', help='Astronomy Picture of the Day. Type !nasa '
+                               'extra to see details ')
+async def nasa(ctx, details: str = None):
     info = Nasa.get_nasa_picture(NASA_TOKEN)
-
     if not info:
         await ctx.send('Ocorreu um problema ao buscar a imagem do dia!')
+        return
 
     await ctx.send(info['img'])
     await ctx.send(f"**{info['title']}**")
 
-
-@bot.command(name='nasa+', aliases=['NASA+'],
-             help='Astronomy Picture of the Day + explanation')
-async def nasa_description(ctx):
-    info = Nasa.get_nasa_picture(NASA_TOKEN, True)
-
-    if not info:
-        await ctx.send('Ocorreu um problema ao buscar a imagem do dia!')
-
-    await ctx.send(info['img'])
-    await ctx.send(f"**{info['title']}** {info['explanation']}")
+    if details in ['details', 'extra']:
+        await ctx.send(f"{info['explanation']}")
 
 
 if __name__ == '__main__':
