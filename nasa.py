@@ -1,10 +1,12 @@
+from typing import Union
+
 import requests
 
 
 class Nasa:
 
     @staticmethod
-    def get_nasa_picture(token):
+    def get_nasa_picture(token: str) -> Union[None, dict]:
         """ Access NASA API and retrieve the picture of the day """
 
         # Contact API
@@ -18,13 +20,10 @@ class Nasa:
         # Parse response
         try:
             get = response.json()
-            result = {
+            return {
                 'img': get["url"],
                 'title': get["title"],
                 'explanation': get["explanation"]
             }
-
-            return result
-
         except (KeyError, TypeError, ValueError):
             return None
