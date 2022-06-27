@@ -1,9 +1,7 @@
-from typing import Union
-
 import requests
 
 
-def cat_status_code(status_code: str) -> Union[None, str]:
+def cat_status_code(status_code: str) -> None | str:
     """ Request image from HTTP Cat API """
 
     # Contact API
